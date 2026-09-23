@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Soporte PWA iOS y Android -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Brasil 26">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#047857"> <!-- Verde Brasil -->
+
+    <title>Expedición Brasil 2026 | VIP</title>
+
+    <!-- Fuentes y Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Configuración Tailwind para colores personalizados -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        br: { green: '#059669', yellow: '#FBBF24', blue: '#2563EB', dark: '#064E3B' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Outfit', sans-serif; background-color: #f1f5f9; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Animaciones */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .pulse-glow { animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); } 
+        }
+
+        .typing-dot { animation: typing 1.4s infinite ease-in-out; fill: #059669; }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
+
+        /* Efecto Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    </style>
+</head>
+<body class="flex justify-center h-screen overflow-hidden text-slate-800">
+
+    <div class="w-full max-w-md bg-slate-50 h-full flex flex-col shadow-2xl relative overflow-hidden">
+        
+        <!-- Header Principal (Verde Brasil con detalles Amarillos) -->
+        <header class="bg-gradient-to-br from-br-dark to-br-green text-white pt-12 pb-6 px-6 shadow-lg z-20 rounded-b-[2rem] relative overflow-hidden flex-shrink-0">
+            <!-- Textura de fondo -->
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+            
+            <div class="relative z-10 flex justify-between items-center">
+                <div>
+                    <span class="bg-br-yellow text-br-dark text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">13 - 22 Oct, 2026</span>
+                    <h1 class="text-3xl font-extrabold tracking-tight leading-tight">Expedición<br>Brasil 🇧🇷</h1>
+                </div>
+                <div class="h-14 w-14 rounded-full border-2 border-br-yellow overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=150&q=80" alt="Rio" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <p class="relative z-10 text-emerald-100 text-sm font-medium mt-3 opacity-90 flex items-center">
+                <i class="ph-fill ph-users mr-1"></i> Fabiana, Daría, Antonio y Alberth
+            </p>
+        </header>
+
+        <main class="flex-1 overflow-y-auto no-scrollbar relative z-0 pb-24" id="main-content">
+            
+            <!-- VISTA 1: ITINERARIO DINÁMICO -->
+            <div id="view-itinerary" class="view-section p-4 space-y-5 fade-in">
+                
+                <div class="flex justify-between items-end mb-2 px-1">
+                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Ruta del Viaje</h2>
+                    <button onclick="resetItinerary()" class="text-xs text-br-green font-bold flex items-center">
+                        <i class="ph-bold ph-arrows-clockwise mr-1"></i> Restaurar
+                    </button>
+                </div>
+
+                <!-- Contenedor donde se renderizarán las tarjetas vía JS -->
+                <div id="itinerary-container" class="space-y-5">
+                    <!-- Las tarjetas se inyectan aquí -->
+                </div>
+            </div>
+
+            <!-- VISTA 2: ASISTENTE IA (CONCIERGE) -->
+            <div id="view-ia" class="view-section hidden h-full flex flex-col relative fade-in">
+                <!-- Notificación de Actualización -->
+                <div id="ai-notification" class="absolute top-2 left-4 right-4 bg-br-yellow text-br-dark font-bold text-xs p-3 rounded-xl shadow-lg transform -translate-y-20 transition-transform duration-300 z-50 flex items-center justify-between">
+                    <span class="flex items-center"><i class="ph-fill ph-magic-wand mr-2 text-lg"></i> ¡El itinerario ha sido modificado por la IA!</span>
+                    <button onclick="closeNotification()"><i class="ph-bold ph-x"></i></button>
+                </div>
+
+                <div class="bg-br-blue text-white text-xs text-center py-2 px-4 shadow-sm z-10 flex items-center justify-center">
+                    <i class="ph-fill ph-robot mr-1"></i> Inteligencia Artificial Activa. ¡Pídele que cambie el plan!
+                </div>
+                
+                <div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-5 pb-32">
+                    <!-- Mensaje Inicial -->
+                    <div class="flex items-start w-full">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-br-green to-br-blue flex items-center justify-center text-white flex-shrink-0 shadow-md">
+                            <i class="ph-fill ph-robot text-xl"></i>
+                        </div>
+                        <div class="ml-3 bg-white text-slate-700 text-sm p-4 rounded-2xl rounded-tl-none shadow-sm border border-slate-100">
+                            <strong>¡Hola viajeros! 👋</strong> Soy su Concierge de Inteligencia Artificial.<br><br>
+                            Conozco su viaje a Búzios y Río a la perfección. Pregúntame sobre precios, comida o dile algo como:<br>
+                            <span class="text-br-blue font-semibold mt-2 inline-block">"Cambia el plan del Día 1, mejor iremos a bucear"</span> y modificaré tu itinerario en tiempo real. ✨
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input del Chat Flotante -->
+                <div class="absolute bottom-4 left-4 right-4 glass rounded-3xl p-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 z-20">
+                    <div class="flex items-center">
+                        <input type="text" id="chat-input" placeholder="Ej: Precio del Cristo Redentor..." 
+                               class="w-full bg-transparent text-slate-800 text-sm py-2 px-3 focus:outline-none placeholder-slate-400">
+                        <button onclick="handleSend()" class="bg-br-dark hover:bg-br-green text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow-md transition-colors ml-2">
+                            <i class="ph-bold ph-paper-plane-right text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA 3: PRESUPUESTO Y TIPS -->
+            <div id="view-info" class="view-section hidden p-5 space-y-6 fade-in pb-24">
+                
+                <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-2">Presupuesto y Logs</h2>
+                
+                <!-- Ticket Cristo -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-2 bg-br-green"></div>
+                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-br-green mr-4">
+                        <i class="ph-fill ph-mountains text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-slate-800 text-sm">Cristo Redentor (Oficial)</h3>
+                        <p class="text-xs text-slate-500">Trem do Corcovado</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-extrabold text-br-green">R$ 122,50</span>
+                        <a href="https://www.tremdocorcovado.rio/" target="_blank" class="text-[10px] text-br-blue underline">Comprar</a>
+                    </div>
+                </div>
+
+                <!-- Ticket Pan de Azucar -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-2 bg-br-yellow"></div>
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mr-4">
+                        <i class="ph-fill ph-cable-car text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-slate-800 text-sm">Pão de Açúcar</h3>
+                        <p class="text-xs text-slate-500">Teleférico atardecer</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-extrabold text-amber-600">R$ 185,00</span>
+                        <a href="https://bondinho.com.br/" target="_blank" class="text-[10px] text-br-blue underline">Comprar</a>
+                    </div>
+                </div>
+
+                <!-- Vehículo -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-2 bg-slate-800"></div>
+                    <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 mr-4">
+                        <i class="ph-fill ph-car-profile text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-slate-800 text-sm">Logística Búzios (Grupal)</h3>
+                        <p class="text-xs text-slate-500">Gasolina + Peaje ViaLagos</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-extrabold text-slate-800">~R$ 300</span>
+                        <span class="text-[10px] text-slate-400">Total Auto</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 p-5 mt-6">
+                    <h3 class="font-extrabold text-lg text-slate-800 mb-4 flex items-center">
+                        <i class="ph-fill ph-check-square text-br-green mr-2"></i> Checklist Esencial
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="ph-fill ph-check-circle text-br-green mt-0.5 mr-2"></i>
+                            <span class="text-sm text-slate-600">Pasaporte / ID y Licencia de conducir</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="ph-fill ph-check-circle text-br-green mt-0.5 mr-2"></i>
+                            <span class="text-sm text-slate-600">Tarjetas físicas (Tenpo/Fala) + Reales para playa</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="ph-fill ph-check-circle text-br-green mt-0.5 mr-2"></i>
+                            <span class="text-sm text-slate-600">Adaptador hexagonal (Tipo N de 3 clavijas)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+
+        <nav class="absolute bottom-0 w-full glass border-t border-slate-200 pb-safe pt-2 flex justify-around items-center h-[72px] z-30">
+            <button onclick="switchTab('itinerary')" id="tab-itinerary" class="nav-btn flex flex-col items-center w-1/3 text-br-green transition-colors">
+                <i class="ph-fill ph-map-trifold text-2xl mb-1"></i>
+                <span class="text-[10px] font-bold">Ruta</span>
+            </button>
+            <button onclick="switchTab('ia')" id="tab-ia" class="nav-btn flex flex-col items-center w-1/3 text-slate-400 hover:text-br-green transition-colors relative">
+                <div class="relative pulse-glow rounded-full">
+                    <i class="ph-fill ph-robot text-2xl mb-1"></i>
+                    <!-- Puntito de notificación -->
+                    <span class="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-br-yellow opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-br-yellow border-2 border-white"></span>
+                    </span>
+                </div>
+                <span class="text-[10px] font-bold mt-1">Concierge IA</span>
+            </button>
+            <button onclick="switchTab('info')" id="tab-info" class="nav-btn flex flex-col items-center w-1/3 text-slate-400 hover:text-br-green transition-colors">
+                <i class="ph-fill ph-wallet text-2xl mb-1"></i>
+                <span class="text-[10px] font-bold">Costos</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // --- 1. DATOS DEL ITINERARIO POR DEFECTO ---
+        const defaultItinerary = [
+            { id: 1, day: "Día 1 (13/10)", loc: "Búzios", title: "Llegada y Sunset Buziano", desc: "Arribo a Río, manejo de auto a Búzios. Tarde relax en Praia de Geribá. Cena de mariscos en Bar do Zé.", img: "https://images.unsplash.com/photo-1629851610444-486121bdfc54?auto=format&fit=crop&w=600&q=80", icon: "ph-sun" },
+            { id: 2, day: "Día 2 (14/10)", loc: "Búzios", title: "Aguas Cálidas y Miradores", desc: "Snorkel en João Fernandes y tarde tranquila en Ferradura. Al atardecer, Porto da Barra y cena en Donna Jô.", img: "https://images.unsplash.com/photo-1596701041935-714034f434df?auto=format&fit=crop&w=600&q=80", icon: "ph-waves" },
+            { id: 3, day: "Día 3 (15/10)", loc: "Búzios", title: "Naturaleza y Crepes", desc: "Caminata a Praia Azeda. Tarde de souvenirs en el centro y despedida con crepes en Chez Michou.", img: "https://images.unsplash.com/photo-1619560820102-39f506ee4977?auto=format&fit=crop&w=600&q=80", icon: "ph-tree-palm" },
+            { id: 4, day: "Día 4 (16/10)", loc: "Río", title: "Retorno a Ciudad Maravillosa", desc: "Devolución del auto. Instalación en Zona Sul. Caminata por Ipanema (Posto 9) y cena en Garota de Ipanema.", img: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=600&q=80", icon: "ph-buildings" },
+            { id: 5, day: "Día 5 (17/10)", loc: "Río Centro", title: "Historia y Bohemia Lapa", desc: "Escadaria Selarón, Arcos da Lapa y Museu do Amanhã. Almuerzo Colombo y noche de Samba en Rio Scenarium.", img: "https://images.unsplash.com/photo-1582736173784-0a693c155353?auto=format&fit=crop&w=600&q=80", icon: "ph-stairs" },
+            { id: 6, day: "Día 6 (18/10)", loc: "Río Sul", title: "Cristo y Selva Urbana", desc: "Trem do Corcovado al Cristo Redentor (AM). Brunch en Parque Lage y paseo por Jardim Botânico.", img: "https://images.unsplash.com/photo-1518639158023-e18e8071eaf2?auto=format&fit=crop&w=600&q=80", icon: "ph-hands-praying" },
+            { id: 7, day: "Día 7 (19/10)", loc: "Urca", title: "Alturas del Pão de Açúcar", desc: "Praia Vermelha. Ascenso al teleférico al atardecer. Noche de pastéis y cerveza en la Mureta da Urca.", img: "https://images.unsplash.com/photo-1591468112108-a53ecfbbf34c?auto=format&fit=crop&w=600&q=80", icon: "ph-cable-car" },
+            { id: 8, day: "Día 8 (20/10)", loc: "Copacabana", title: "Playas y Carnes", desc: "Fuerte de Copacabana. Tarde de playa y atardecer mágico en Pedra do Arpoador. Cena en CT Boucherie.", img: "https://images.unsplash.com/photo-1620023447953-652da7012ce7?auto=format&fit=crop&w=600&q=80", icon: "ph-umbrella" },
+            { id: 9, day: "Día 9 (21/10)", loc: "Santa Teresa", title: "Cultura en las Alturas", desc: "Bonde histórico de Santa Teresa y panorámicas en Parque das Ruínas. Cena despedida en Canastra Bar.", img: "https://images.unsplash.com/photo-1627880928734-d115e580a133?auto=format&fit=crop&w=600&q=80", icon: "ph-tram" },
+            { id: 10, day: "Día 10 (22/10)", loc: "Regreso", title: "Despedida Carioca", desc: "Último baño de mar, desayuno en quioscos, compras finales (Havaianas) y traslado en Uber al Aeropuerto.", img: "https://images.unsplash.com/photo-1549474149-41e976db57cd?auto=format&fit=crop&w=600&q=80", icon: "ph-airplane-takeoff" }
+        ];
+
+        // --- 2. GESTIÓN DE ESTADO LOCAL ---
+        let itineraryData = [];
+
+        function loadItinerary() {
+            const saved = localStorage.getItem('brasil2026_itinerary');
+            if (saved) {
+                itineraryData = JSON.parse(saved);
+            } else {
+                itineraryData = JSON.parse(JSON.stringify(defaultItinerary));
+            }
+            renderItinerary();
+        }
+
+        function saveItinerary() {
+            localStorage.setItem('brasil2026_itinerary', JSON.stringify(itineraryData));
+        }
+
+        function resetItinerary() {
+            if(confirm("¿Restaurar el itinerario al plan original? Perderás los cambios de la IA.")) {
+                itineraryData = JSON.parse(JSON.stringify(defaultItinerary));
+                saveItinerary();
+                renderItinerary();
+            }
+        }
+
+        // --- 3. RENDERIZADO VISUAL DINÁMICO ---
+        function renderItinerary() {
+            const container = document.getElementById('itinerary-container');
+            container.innerHTML = '';
+
+            itineraryData.forEach(day => {
+                const isBuzios = day.loc.includes('Búzios');
+                const badgeColor = isBuzios ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+                
+                const card = `
+                <div class="bg-white rounded-[1.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.05)] overflow-hidden border border-slate-100 transform transition hover:scale-[1.02]">
+                    <div class="h-32 w-full relative">
+                        <img src="${day.img}" class="w-full h-full object-cover" alt="${day.loc}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                        <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+                            <span class="text-white font-extrabold text-xl shadow-sm">${day.day}</span>
+                            <span class="${badgeColor} text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-wide backdrop-blur-md">${day.loc}</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-extrabold text-slate-800 mb-2 flex items-center leading-tight">
+                            <i class="ph-fill ${day.icon} mr-2 text-br-green text-xl"></i>
+                            ${day.title}
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">${day.desc}</p>
+                    </div>
+                </div>`;
+                container.innerHTML += card;
+            });
+        }
+
+        // --- 4. NAVEGACIÓN ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('text-br-green');
+                el.classList.add('text-slate-400');
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.remove('text-slate-400');
+            document.getElementById(`tab-${tabId}`).classList.add('text-br-green');
+        }
+
+        // --- 5. INTELIGENCIA ARTIFICIAL Y PARSEO DE INSTRUCCIONES ---
+        
+        // La clave API del usuario
+        const apiKey = "AQ.Ab8RN6JnqcCihgpCcEkcU0LZnzwlM33TRhx3ekaffbMYPk12OQ";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+        // Prompt del sistema oculto para enseñar a la IA cómo editar el código de la app
+        let chatHistory = [
+            {
+                role: "user",
+                parts: [{ text: `Actúa como un Concierge VIP en Brasil para Fabiana, Daría, Antonio y Alberth (13 al 22 Oct). 
+                REGLA CRÍTICA: Eres capaz de modificar el itinerario de la App. Si el usuario te pide CAMBIAR, AGREGAR o MODIFICAR algo de los planes, 
+                debes responder amigablemente con la recomendación/precios y AL FINAL de tu respuesta, DEBES escribir OBLIGATORIAMENTE un bloque de código exactamente así:
+                [MODIFICAR_DIA id="X" title="Nuevo Titulo" desc="Nueva descripcion"]
+                Donde X es el número del día (1 al 10). Usa este comando SOLO si piden modificar. Si solo hacen preguntas, responde normal.` }]
+            },
+            {
+                role: "model",
+                parts: [{ text: "Entendido. Soy el Concierge VIP de la expedición. Ayudaré con datos, precios y si me piden modificar la ruta de algún día, anexaré el comando [MODIFICAR_DIA id=\"X\" title=\"...\" desc=\"...\"] al final de mi respuesta para actualizar su App." }]
+            }
+        ];
+
+        const chatContainer = document.getElementById('chat-container');
+        const chatInput = document.getElementById('chat-input');
+
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        async function handleSend() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user');
+            chatInput.value = '';
+            
+            const loadingId = showLoading();
+            chatHistory.push({ role: "user", parts: [{ text: text }] });
+
+            const payload = {
+                contents: chatHistory,
+                generationConfig: { maxOutputTokens: 300, temperature: 0.7 } 
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                removeLoading(loadingId);
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error.message);
+
+                if (data.candidates && data.candidates.length > 0) {
+                    let aiText = data.candidates[0].content.parts[0].text;
+                    
+                    // PROCESAR COMANDOS DE LA IA PARA MODIFICAR ITINERARIO
+                    const processedText = parseAICommands(aiText);
+
+                    appendMessage(processedText, 'model');
+                    chatHistory.push({ role: "model", parts: [{ text: aiText }] }); // guardamos texto original para contexto
+                }
+
+            } catch (error) {
+                removeLoading(loadingId);
+                console.error("API Error:", error);
+                
+                // MANEJO DE ERROR SI LA CLAVE API FALLA (Simulamos una modificación para que vea cómo funciona la UI)
+                if(text.toLowerCase().includes("cambia") || text.toLowerCase().includes("modifica")) {
+                    appendMessage("⚠️ Nota: Tu API Key no fue autorizada, pero **simularé el cambio** para que veas el poder de esta App.", 'model');
+                    setTimeout(() => {
+                        let demoText = "[MODIFICAR_DIA id=\"1\" title=\"Día de Yate VIP\" desc=\"Paseo exclusivo en yate privado por las playas de Búzios. Bebidas incluidas y snorkel en altamar.\"]";
+                        parseAICommands(demoText);
+                    }, 1000);
+                } else {
+                    appendMessage("⚠️ Error: Tu API Key ('AQ.Ab8...') no parece tener permisos válidos de Google Gemini. Ve a Google AI Studio, crea una gratis (empiezan con AIza...) y reemplázala en el código.", 'model');
+                }
+                chatHistory.pop(); 
+            }
+        }
+
+        // Motor de análisis de comandos de la IA
+        function parseAICommands(text) {
+            const regex = /\[MODIFICAR_DIA id="(\d+)" title="([^"]+)" desc="([^"]+)"\]/g;
+            let match;
+            let updated = false;
+            
+            while ((match = regex.exec(text)) !== null) {
+                const id = parseInt(match[1]);
+                const newTitle = match[2];
+                const newDesc = match[3];
+                
+                const dayIndex = itineraryData.findIndex(d => d.id === id);
+                if(dayIndex !== -1) {
+                    itineraryData[dayIndex].title = newTitle;
+                    itineraryData[dayIndex].desc = newDesc;
+                    // Cambiar ícono dinámicamente
+                    itineraryData[dayIndex].icon = "ph-star-four";
+                    updated = true;
+                }
+            }
+
+            if(updated) {
+                saveItinerary();
+                renderItinerary();
+                showNotification();
+            }
+
+            // Devolver el texto sin los comandos feos para que el usuario lea natural
+            return text.replace(/\[MODIFICAR_DIA.*?\]/g, '').trim();
+        }
+
+        // --- 6. FUNCIONES UI ---
+        function appendMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            if (sender === 'user') {
+                msgDiv.className = 'flex items-end justify-end ml-auto w-full mb-2 fade-in';
+                msgDiv.innerHTML = `
+                    <div class="bg-br-dark text-white text-sm p-4 rounded-3xl rounded-tr-none shadow-md max-w-[85%]">
+                        ${formattedText}
+                    </div>
+                `;
+            } else {
+                msgDiv.className = 'flex items-start w-full mb-2 fade-in';
+                msgDiv.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-br-green to-br-blue flex items-center justify-center text-white flex-shrink-0 shadow-md">
+                        <i class="ph-fill ph-robot text-xl"></i>
+                    </div>
+                    <div class="ml-3 bg-white text-slate-700 text-sm p-4 rounded-3xl rounded-tl-none shadow-sm border border-slate-100 max-w-[85%] leading-relaxed">
+                        ${formattedText}
+                    </div>
+                `;
+            }
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function showLoading() {
+            const id = 'loading-' + Date.now();
+            const msgDiv = document.createElement('div');
+            msgDiv.id = id;
+            msgDiv.className = 'flex items-start w-full mb-2 fade-in';
+            msgDiv.innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
+                    <i class="ph-fill ph-robot text-xl"></i>
+                </div>
+                <div class="ml-3 bg-white p-4 rounded-3xl rounded-tl-none shadow-sm border border-slate-100 flex items-center space-x-1 h-12 w-20 justify-center">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24">
+                        <circle class="typing-dot" cx="6" cy="12" r="2.5" />
+                        <circle class="typing-dot" cx="12" cy="12" r="2.5" />
+                        <circle class="typing-dot" cx="18" cy="12" r="2.5" />
+                    </svg>
+                </div>
+            `;
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+            return id;
+        }
+
+        function removeLoading(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showNotification() {
+            const notif = document.getElementById('ai-notification');
+            notif.classList.remove('-translate-y-20');
+            setTimeout(closeNotification, 4000);
+        }
+
+        function closeNotification() {
+            const notif = document.getElementById('ai-notification');
+            notif.classList.add('-translate-y-20');
+        }
+
+        // Inicializar App
+        window.onload = loadItinerary;
+
+    </script>
+</body>
+</html>
