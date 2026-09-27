@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Viaje Brasil 2026 | Búzios & Río</title>
+  <title>Viaje Brasil 2026 | Río & Búzios</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -18,7 +18,7 @@
       <div class="flex flex-wrap justify-between items-center gap-4">
         <div>
           <span class="bg-white/20 text-xs tracking-wider uppercase px-3 py-1 rounded-full font-semibold">13/10 al 22/10</span>
-          <h1 class="text-3xl sm:text-4xl font-extrabold mt-2">Búzios & Río de Janeiro 🇧🇷</h1>
+          <h1 class="text-3xl sm:text-4xl font-extrabold mt-2">Río de Janeiro & Búzios 🇧🇷</h1>
           <p class="text-teal-100 text-sm mt-1">10 días / 9 noches • Planificación grupal</p>
         </div>
         <div class="flex items-center gap-2 bg-black/20 backdrop-blur-sm p-3 rounded-2xl border border-white/10">
@@ -38,17 +38,17 @@
     <!-- Tarjetas de Logística Clave -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-        <div class="p-3 bg-amber-100 text-amber-700 rounded-xl"><i class="fa-solid fa-car text-xl"></i></div>
+        <div class="p-3 bg-blue-100 text-blue-700 rounded-xl"><i class="fa-solid fa-taxi text-xl"></i></div>
         <div>
-          <h3 class="font-bold text-sm text-slate-700">Etapa Auto (13 al 16/10)</h3>
-          <p class="text-xs text-slate-500 mt-1">Llegada nocturna, ruta a Búzios sin tráfico (ViaLagos RJ-124) y devolución el 16/10 en Río.</p>
+          <h3 class="font-bold text-sm text-slate-700">Etapa Río (13 al 19/10)</h3>
+          <p class="text-xs text-slate-500 mt-1">Llegada nocturna el 13. Movilidad exclusiva en Uber y Metro. Sin estrés por tráfico ni cobro de estacionamientos.</p>
         </div>
       </div>
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-        <div class="p-3 bg-blue-100 text-blue-700 rounded-xl"><i class="fa-solid fa-taxi text-xl"></i></div>
+        <div class="p-3 bg-amber-100 text-amber-700 rounded-xl"><i class="fa-solid fa-car text-xl"></i></div>
         <div>
-          <h3 class="font-bold text-sm text-slate-700">Etapa Río (16 al 22/10)</h3>
-          <p class="text-xs text-slate-500 mt-1">Movilidad en Uber y Metro. Sin preocupaciones de estacionamiento hasta el vuelo nocturno del día 22.</p>
+          <h3 class="font-bold text-sm text-slate-700">Etapa Auto (19 al 22/10)</h3>
+          <p class="text-xs text-slate-500 mt-1">Retiro de auto en Río el día 19. Ruta a Búzios (ViaLagos). Devolución en el aeropuerto GIG el 22/10 antes del vuelo.</p>
         </div>
       </div>
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
@@ -96,16 +96,16 @@
             <input type="number" id="costTickets" value="1280" class="w-full mt-1 p-2 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none focus:ring-2 focus:ring-emerald-500" oninput="calcularPresupuesto()">
           </div>
           <div>
-            <label class="text-xs font-semibold text-slate-500">Estimación Uber total en Río (7 días):</label>
-            <input type="number" id="costUber" value="700" class="w-full mt-1 p-2 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none focus:ring-2 focus:ring-emerald-500" oninput="calcularPresupuesto()">
+            <label class="text-xs font-semibold text-slate-500">Estimación Uber total en Río (6 días):</label>
+            <input type="number" id="costUber" value="650" class="w-full mt-1 p-2 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none focus:ring-2 focus:ring-emerald-500" oninput="calcularPresupuesto()">
           </div>
         </div>
         <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col justify-center">
           <p class="text-xs uppercase text-slate-400 font-semibold tracking-wider">Total Grupo (4 personas)</p>
-          <p class="text-3xl font-extrabold text-slate-800 mt-1" id="totalGeneral">R$ 3.180</p>
+          <p class="text-3xl font-extrabold text-slate-800 mt-1" id="totalGeneral">R$ 3.130</p>
           <hr class="my-3 border-slate-200">
           <p class="text-xs uppercase text-emerald-600 font-semibold tracking-wider">Por Persona (Fabiana, Daría, Antonio, Alberth)</p>
-          <p class="text-2xl font-bold text-emerald-600 mt-1" id="totalPersona">R$ 795</p>
+          <p class="text-2xl font-bold text-emerald-600 mt-1" id="totalPersona">R$ 783</p>
           <p class="text-[11px] text-slate-400 mt-2">*Excluye comidas y alojamiento individual.</p>
         </div>
       </div>
@@ -133,7 +133,7 @@
           <input type="checkbox" class="accent-emerald-600 w-4 h-4 rounded"> Cuenta Uber activa y verificada
         </label>
         <label class="flex items-center gap-2 p-2 hover:bg-slate-50 rounded cursor-pointer">
-          <input type="checkbox" class="accent-emerald-600 w-4 h-4 rounded"> Avisar llegada nocturna a la posada de Búzios
+          <input type="checkbox" class="accent-emerald-600 w-4 h-4 rounded"> Batería externa (Powerbank) para los días largos
         </label>
       </div>
     </section>
@@ -143,83 +143,83 @@
   <script>
     const itinerary = [
       {
-        day: 1, date: "13/10", tag: "Búzios", title: "Llegada Nocturna y Ruta a Búzios",
+        day: 1, date: "13/10", tag: "Río", title: "Llegada Nocturna a Río de Janeiro",
         items: [
           { time: "Día", desc: "Día de viaje hacia Brasil." },
-          { time: "Noche (21:00)", desc: "Aterrizaje del vuelo en Río de Janeiro. Trámites de equipaje y retiro del auto (SUV/Sedán) en la agencia del aeropuerto." },
-          { time: "Madrugada", desc: "Manejo nocturno directo a Búzios (aprox. 2.5h vía ViaLagos RJ-124). Tráfico ligero. Llegada a la posada y check-in." }
+          { time: "Noche (21:00)", desc: "Aterrizaje en el aeropuerto de Río de Janeiro. Trámites de equipaje." },
+          { time: "Madrugada", desc: "Traslado en Uber al hospedaje (Zona Sul: Copacabana o Ipanema). Check-in y descanso." }
         ]
       },
       {
-        day: 2, date: "14/10", tag: "Búzios", title: "Descanso y Playas Principales",
+        day: 2, date: "14/10", tag: "Río", title: "Cristo Redentor & Bosque de Tijuca",
         items: [
-          { time: "Mañana", desc: "Mañana de descanso para reponerse del viaje nocturno. Relajo y primer baño en Playa de Geribá." },
-          { time: "Tarde", desc: "Visita a Praia da Ferradura (mar tranquilo) y João Fernandes (ideal para snorkel)." },
-          { time: "Noche", desc: "Paseo por la famosa Rua das Pedras. Cena en la costanera Orla Bardot y tragos locales." }
+          { time: "Mañana", desc: "Subida al Cristo Redentor en el Trem do Corcovado (primer turno recomendado para evitar multitudes)." },
+          { time: "Tarde", desc: "Visita al Parque Lage y Jardín Botánico (almuerzo en la cafetería del parque)." },
+          { time: "Noche", desc: "Atardecer en la piedra de Arpoador y primera cena oficial en Ipanema." }
         ]
       },
       {
-        day: 3, date: "15/10", tag: "Búzios", title: "Paseo en Barco o Arraial do Cabo",
+        day: 3, date: "15/10", tag: "Río", title: "Pão de Açúcar & Urca",
         items: [
-          { time: "Mañana", desc: "Excursión en escuna tradicional recorriendo calas e islas de Búzios, o escapada corta en auto a Arraial do Cabo." },
-          { time: "Tarde", desc: "Playa Brava con descanso en los paradores costeros." },
-          { time: "Noche", desc: "Última cena relajada en Búzios antes de empacar." }
+          { time: "Mañana", desc: "Mañana libre de playa en Leblon o Ipanema para disfrutar del sol." },
+          { time: "Tarde", desc: "Subida al teleférico del Pão de Açúcar (Morro da Urca y cima, ideal coordinar con el atardecer)." },
+          { time: "Noche", desc: "Petiscos (tapas brasileñas) y cerveza frente a la bahía en la Mureta da Urca (Bar Urca)." }
         ]
       },
       {
-        day: 4, date: "16/10", tag: "Río", title: "Regreso a Río y Devolución del Auto",
+        day: 4, date: "16/10", tag: "Río", title: "Centro Histórico & Noche en Lapa",
         items: [
-          { time: "Mañana", desc: "Salida temprano de Búzios para evitar congestión en el puente Río-Niterói." },
-          { time: "Tarde", desc: "Devolución del vehículo en la agencia. Check-in en hospedaje (Zona Sul: Copacabana/Ipanema)." },
-          { time: "Noche", desc: "Caminata por la costanera de Copacabana y caipirinhas en quioscos de playa." }
-        ]
-      },
-      {
-        day: 5, date: "17/10", tag: "Río", title: "Cristo Redentor & Bosque de Tijuca",
-        items: [
-          { time: "Mañana", desc: "Subida al Cristo Redentor en el Trem do Corcovado (primer turno para evitar multitudes)." },
-          { time: "Tarde", desc: "Visita al Parque Lage y Jardín Botánico (almuerzo en cafetería del parque)." },
-          { time: "Noche", desc: "Atardecer en Arpoador y cena en Ipanema." }
-        ]
-      },
-      {
-        day: 6, date: "18/10", tag: "Río", title: "Pão de Açúcar & Urca",
-        items: [
-          { time: "Mañana", desc: "Mañana libre de playa en Leblon o Ipanema." },
-          { time: "Tarde", desc: "Subida al teleférico del Pão de Açúcar (Morro da Urca y cima al atardecer)." },
-          { time: "Noche", desc: "Petiscos (tapas brasileñas) y cerveza en la Mureta da Urca (Bar Urca)." }
-        ]
-      },
-      {
-        day: 7, date: "19/10", tag: "Río", title: "Centro Histórico & Noche en Lapa",
-        items: [
-          { time: "Mañana", desc: "Escadaria Selarón, Arcos de Lapa y Catedral Metropolitana de San Sebastián." },
+          { time: "Mañana", desc: "Recorrido por la Escadaria Selarón, Arcos de Lapa y la Catedral Metropolitana de San Sebastián." },
           { time: "Tarde", desc: "Visita al Real Gabinete Portugués de Lectura y Museo do Amanhã (Plaza Mauá)." },
-          { time: "Noche", desc: "Samba en vivo en Lapa (ej. Rio Scenarium o bares tradicionales)." }
+          { time: "Noche", desc: "Noche de Samba en vivo en Lapa (ej. Rio Scenarium o bares tradicionales de la zona)." }
         ]
       },
       {
-        day: 8, date: "20/10", tag: "Río", title: "Miradores y Playas Salvajes",
+        day: 5, date: "17/10", tag: "Río", title: "Miradores y Playas Salvajes",
         items: [
-          { time: "Mañana", desc: "Mirante Dona Marta en Uber temprano (vista despejada del Cristo y Pão de Açúcar)." },
-          { time: "Tarde", desc: "Playa São Conrado o Barra da Tijuca. Opción de vuelo en parapente." },
-          { time: "Noche", desc: "Cena en un Rodizio tradicional de carne (Churrascaria Fogo de Chão o Carretão)." }
+          { time: "Mañana", desc: "Visita al Mirante Dona Marta en Uber temprano (una de las mejores vistas despejadas de Río)." },
+          { time: "Tarde", desc: "Tarde de playa en São Conrado o Barra da Tijuca. Opción de vuelo en parapente." },
+          { time: "Noche", desc: "Cena en un Rodizio tradicional de carne brasileña (Churrascaria Fogo de Chão o Carretão)." }
         ]
       },
       {
-        day: 9, date: "21/10", tag: "Río", title: "Barrio Santa Teresa y Compras",
+        day: 6, date: "18/10", tag: "Río", title: "Día Playero y Compras",
         items: [
-          { time: "Mañana", desc: "Compras de recuerdos, sandalias Havaianas y café brasileño en el barrio de Santa Teresa." },
-          { time: "Tarde", desc: "Última tarde completa de playa en Ipanema (Posto 9)." },
-          { time: "Noche", desc: "Cena de despedida del grupo frente a la bahía." }
+          { time: "Mañana", desc: "Día de relax completo en la playa de Copacabana (Posto 4) o Ipanema (Posto 9)." },
+          { time: "Tarde", desc: "Compras de recuerdos, sandalias Havaianas y café brasileño en el bohemio barrio de Santa Teresa." },
+          { time: "Noche", desc: "Última cena en Río de Janeiro, caminando por la costanera nocturna." }
         ]
       },
       {
-        day: 10, date: "22/10", tag: "Río", title: "Día Playero y Vuelo Nocturno",
+        day: 7, date: "19/10", tag: "Búzios", title: "Retiro de Auto y Ruta a Búzios",
         items: [
-          { time: "Mañana", desc: "Aprovechar la mañana en Copacabana. Check-out al mediodía (guardar equipaje en recepción del hotel)." },
-          { time: "Tarde", desc: "Almuerzo relajado y paseo por la costanera. Últimas caipirinhas en los quioscos de la playa." },
-          { time: "Noche (18:30)", desc: "Recoger maletas en el hotel y pedir Uber al aeropuerto. El vuelo de regreso despega a las 22:00 hrs." }
+          { time: "Mañana", desc: "Check-out del hospedaje en Río. Retiro del auto de alquiler (SUV/Sedán amplio) en la agencia de la ciudad." },
+          { time: "Tarde", desc: "Manejo hacia Búzios (aprox. 2.5 - 3h vía puente Río-Niterói y autopista ViaLagos RJ-124). Llegada y check-in en la posada." },
+          { time: "Noche", desc: "Primer paseo por la famosa Rua das Pedras. Cena en la costanera Orla Bardot." }
+        ]
+      },
+      {
+        day: 8, date: "20/10", tag: "Búzios", title: "Circuito de Playas Clásicas",
+        items: [
+          { time: "Mañana", desc: "Mañana de mar y sol en la extensa Playa de Geribá (ideal para olas y caminatas)." },
+          { time: "Tarde", desc: "Visita a Praia da Ferradura (mar tranquilo en forma de herradura) y João Fernandes (ideal para snorkel)." },
+          { time: "Noche", desc: "Gastronomía local en Porto da Barra, un complejo gastronómico ideal para el atardecer/noche." }
+        ]
+      },
+      {
+        day: 9, date: "21/10", tag: "Búzios", title: "Paseo en Barco o Arraial",
+        items: [
+          { time: "Mañana", desc: "Excursión en escuna tradicional recorriendo calas e islas de Búzios, o aprovechar el auto para ir a Arraial do Cabo." },
+          { time: "Tarde", desc: "Descanso y bebidas en los paradores costeros de Playa Brava." },
+          { time: "Noche", desc: "Última noche de vacaciones. Cena de despedida del grupo en el centro de Búzios." }
+        ]
+      },
+      {
+        day: 10, date: "22/10", tag: "Búzios", title: "Retorno a Río y Vuelo",
+        items: [
+          { time: "Mañana", desc: "Último desayuno en la posada, check-out al mediodía. Caminata final por la playa." },
+          { time: "Tarde (14:30)", desc: "Salida en auto desde Búzios hacia el aeropuerto de Río de Janeiro (GIG o SDU). Se calculan 3h de viaje con margen de seguridad." },
+          { time: "Noche (18:30)", desc: "Devolución del auto de alquiler en el aeropuerto. Check-in de equipaje para el vuelo que despega a las 22:00 hrs." }
         ]
       }
     ];
